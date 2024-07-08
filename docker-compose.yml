@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+
+  backend:
+    build: ./server
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=production
+      - DB_CONNECTION_STRING=mongodb://mongo:27017/goDonateMe
+    volumes:
+      - ./server:/usr/src/app
+    depends_on:
+      - mongo
+
+  frontend:
+    build: ./client
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - NODE_ENVoduction
+    volumes:
+      - ./client:/usr/src/app
